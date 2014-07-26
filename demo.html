@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <script type="text/javascript" src="index.js"></script>
+
+  <script type="text/javascript">
+  var Graph = EquationIO.Graph;
+  var graph = new Graph({width: 800, height: 600});
+
+
+  var div = document.createElement('div');
+  // It needs to be in the DOM hierarchy, but we can make it hidden to avoid artefacts before it finishes loading:
+  div.style.opacity = 0.0;
+  div.style.webkitTransition = '2s opacity';
+  document.body.appendChild(div);
+
+  graph.init(div, function (err) {
+    div.style.opacity = 1.0;
+  });
+
+  graph.equations.push({latex: 'y = x'});
+  graph.equations.push({latex: 'y = \\sin x'});
+
+  graph.update();
+  setTimeout(function () {
+    graph.equations[1].color = 'green';
+    graph.update();
+  }, 500)
+
+  </script>
+</body>
+</html>

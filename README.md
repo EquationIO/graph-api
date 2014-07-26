@@ -7,11 +7,9 @@ Draft API:
 
 ```js
 
-var EquationIO = require('equation.io');
+var EquationIO = require('equation-io-api');
 
 var Graph = EquationIO.Graph;
-var Expression = EquationIO.Expression;
-
 
 var div = document.createElement('div');
 // It needs to be in the DOM hierarchy, but we can make it hidden to avoid artefacts before it finishes loading:
@@ -30,16 +28,15 @@ graph.init(div, function (err) {
 
 // Change what is displayed by modifying the .equations array:
 
-graph.equations = [
-  {
-    latex: 'y = \\sin x',
-    color: 'red'
-  },
-  {
-    latex: 'y = \\cos x',
-    color: 'blue'
-  }
-];
+graph.equations.push({
+  latex: 'y = \\sin x',
+  color: 'red'
+});
+
+graph.equations.push({
+  latex: 'y = \\cos x',
+  color: 'blue'
+});
 
 
 // And then call .update()

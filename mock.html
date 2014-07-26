@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body style="background: #eee">
+Test:
+<ul id="equations"></ul>
+<script type="text/javascript">
+  function receiveMessage(event) {
+    var evt;
+    try {
+      evt = JSON.parse(event.data);
+    } catch (ex) {}
+    if (!evt) return;
+
+    if (api[evt.name]) {
+      api[evt.name](evt.data, function () {
+        if (evt.id) {
+          event.source.postMessage(JSON.stringify({equationIO: 1, ack: 1, id: evt.id, args: arguments}), event.origin);
+        }
+      });
+    }
+  }
+  var ul = document.getElementById('equations');
+
+  var api = {
+    init: function (data, done) {
+      setTimeout(done, 500);
+    },
+    'api.v1.payload': function (data, done) {
+      data.forEach(function (msg) {
+        updatesAPI[msg.name](msg.data);
+      });
+      done();
+    },
+    'api.v1.update': function (data, done) {
+      while(ul.firstChild) {
+        ul.removeChild(ul.firstChild);
+      }
+      data.equations.forEach(function (eq) {
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(JSON.stringify(eq)));
+        ul.appendChild(li);
+      });
+    }
+  };
+
+  window.addEventListener('message', receiveMessage, false);
+
+</script>
+</body>
+</html>
